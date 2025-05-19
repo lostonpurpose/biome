@@ -16,3 +16,22 @@
     width: 500px;
     height: 200px;
 }
+
+.data {
+    display: flex;
+
+}
+
+#oxygen-label {
+    margin-right: 250px;
+}
+
+.levels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.level-items {
+    margin-right: 75px;
+}
