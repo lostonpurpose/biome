@@ -6,7 +6,7 @@
 }
 
 .atmos {
-    background-color: aliceblue;
+    background-color: rgb(240, 255, 247);
     width: 500px;
     height: 500px;
 }
@@ -22,7 +22,7 @@
 
 }
 
-#oxygen-label {
+#co2-label {
     margin-right: 250px;
 }
 
