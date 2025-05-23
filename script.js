@@ -24,14 +24,16 @@ function updateSliders(source) {
     co2Level.textContent = "CO2 Level: " + co2RangeSlider.value + "%";
     oxyLevel.textContent = "Oxygen Level: " + (oxygenLabel - co2RangeSlider.value) + "%";
 
+    // animation code
     const max = Number(co2RangeSlider.max) || 100;
-    const rangeValue = Number(co2RangeSlider.value);
-    const color1 = 255 - Math.round((rangeValue / max) * 255);
-    const color2 = 255 - Math.round((rangeValue / max) * 250);
+    const co2RangeValue = Number(co2RangeSlider.value);
+    const oxyRageValue = Number(oxyRangeSlider.value);
+    const color1 = 255 - Math.round((co2RangeValue / max) * 255);
+    const color2 = 255 - Math.round((co2RangeValue / max) * 250);
 
     let color3 = 255;
-    if (rangeValue >= 50) {
-        const t = (rangeValue - 50) / (max - 50);
+    if (co2RangeValue >= 50) {
+        const t = (co2RangeValue - 50) / (max - 50);
         color3 = Math.round(255 - (t * 150));
     }
 
