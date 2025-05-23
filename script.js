@@ -1,20 +1,28 @@
 const co2RangeSlider = document.querySelector("#co2");
+const oxyRangeSlider = document.querySelector("#oxy")
 const co2Level = document.querySelector(".co2-level");
 const oxyLevel = document.querySelector(".oxy-level");
 const plants = document.querySelector(".plants");
 
-let oxygenLevel = 100;
-oxyLevel.textContent = "Oxygen Level: " + (oxygenLevel - co2RangeSlider.value) + "%";
+let oxygenLabel = 100;
+oxyLevel.textContent = "Oxygen Level: " + (oxygenLabel - co2RangeSlider.value) + "%";
 co2Level.textContent = "CO2 Level: " + co2RangeSlider.value + "%";
 
 let currentColor = [255, 255, 255]; // Start with white or your initial color
 let animationFrame; // To track the animation so we can cancel it
 
-co2RangeSlider.addEventListener("input", function () {
-    co2Level.textContent = "CO2 Level: " + co2RangeSlider.value + "%";
+// func to take in oxy or co2 slider and change opposite
+function updateSliders(source) {
+    // make sliders always add up to 100
 
-    
-    oxyLevel.textContent = "Oxygen Level: " + (oxygenLevel - co2RangeSlider.value) + "%";
+    if (source === "co2") {
+        oxyRangeSlider.value = 100 - co2RangeSlider.value;
+    }
+    else if (source === "oxy") {
+        co2RangeSlider.value = 100 - oxyRangeSlider.value;
+    }
+    co2Level.textContent = "CO2 Level: " + co2RangeSlider.value + "%";
+    oxyLevel.textContent = "Oxygen Level: " + (oxygenLabel - co2RangeSlider.value) + "%";
 
     const max = Number(co2RangeSlider.max) || 100;
     const rangeValue = Number(co2RangeSlider.value);
@@ -52,7 +60,10 @@ co2RangeSlider.addEventListener("input", function () {
         }
     }
     animate();
-});
+};
+
+co2RangeSlider.addEventListener('input', () => updateSliders("co2"));
+oxyRangeSlider.addEventListener('input', () => updateSliders("oxy"));
 
 
 

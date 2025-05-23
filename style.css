@@ -19,18 +19,19 @@
 
 .data {
     display: flex;
+    /* justify-content: space-between; */
 
 }
 
-#co2-label {
-    margin-right: 250px;
+#co2-label, #oxy-label {
+    margin-right: 30px;
 }
 
-.levels {
+/* .levels {
     display: flex;
     justify-content: space-between;
     width: 100%;
-}
+} */
 
 .level-items {
     margin-right: 75px;
