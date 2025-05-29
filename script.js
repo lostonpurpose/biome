@@ -3,6 +3,7 @@ const oxyRangeSlider = document.querySelector("#oxy")
 const co2Level = document.querySelector(".co2-level");
 const oxyLevel = document.querySelector(".oxy-level");
 const plants = document.querySelector(".plants");
+const atmos = document.querySelector(".atmos");
 
 let oxygenLabel = 100;
 oxyLevel.textContent = "Oxygen Level: " + (oxygenLabel - co2RangeSlider.value) + "%";
@@ -25,19 +26,22 @@ function updateSliders(source) {
     oxyLevel.textContent = "Oxygen Level: " + (oxygenLabel - co2RangeSlider.value) + "%";
 
     // animation code
-    const max = Number(co2RangeSlider.max) || 100;
+    const co2Max = Number(co2RangeSlider.co2Max) || 100;
+    const oxyMax = Number(co2RangeSlider.co2Max) || 100;
     const co2RangeValue = Number(co2RangeSlider.value);
     const oxyRageValue = Number(oxyRangeSlider.value);
-    const color1 = 255 - Math.round((co2RangeValue / max) * 255);
-    const color2 = 255 - Math.round((co2RangeValue / max) * 250);
 
-    let color3 = 255;
+    const co2Color1 = 255 - Math.round((co2RangeValue / co2Max) * 255);
+    const co2Color2 = 255 - Math.round((co2RangeValue / co2Max) * 250);
+
+    let co2Color3 = 255;
     if (co2RangeValue >= 50) {
-        const t = (co2RangeValue - 50) / (max - 50);
-        color3 = Math.round(255 - (t * 150));
+        const t = (co2RangeValue - 50) / (co2Max - 50);
+        co2Color3 = Math.round(255 - (t * 150));
     }
 
-    const targetColor = [color1, color3, color2];
+    const targetColor = [co2Color1, co2Color3
+, co2Color2];
 
     if (animationFrame) cancelAnimationFrame(animationFrame);
 
@@ -45,6 +49,7 @@ function updateSliders(source) {
     let step = 0;
     const startColor = [...currentColor];
 
+    // animation function
     function animate() {
         step++;
         const progress = step / steps;
@@ -53,7 +58,9 @@ function updateSliders(source) {
         const g = Math.round(startColor[1] + (targetColor[1] - startColor[1]) * progress);
         const b = Math.round(startColor[2] + (targetColor[2] - startColor[2]) * progress);
 
+        
         plants.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        atmos.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
 
         if (step < steps) {
             animationFrame = requestAnimationFrame(animate);
@@ -61,13 +68,18 @@ function updateSliders(source) {
             currentColor = targetColor;
         }
     }
-    animate();
+    // end of use 'source' to change co2 or oxy
+    // or use a param on animate below
+    source === "co2" ? molecule = plants : molecule = atmos
+    animate(molecule);
 };
 
 co2RangeSlider.addEventListener('input', () => updateSliders("co2"));
 oxyRangeSlider.addEventListener('input', () => updateSliders("oxy"));
 
-
+// Initialize everything on page load
+updateSliders("co2");
+updateSliders("oxy");
 
 // wow this just got so complicated
 // if everything starts at 50% we're at balance (except h20, can start at 80 or something)
