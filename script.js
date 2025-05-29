@@ -29,8 +29,9 @@ function updateSliders(source) {
     const co2Max = Number(co2RangeSlider.co2Max) || 100;
     const oxyMax = Number(co2RangeSlider.co2Max) || 100;
     const co2RangeValue = Number(co2RangeSlider.value);
-    const oxyRageValue = Number(oxyRangeSlider.value);
+    const oxyRangeValue = Number(oxyRangeSlider.value);
 
+    // co2 colors
     const co2Color1 = 255 - Math.round((co2RangeValue / co2Max) * 255);
     const co2Color2 = 255 - Math.round((co2RangeValue / co2Max) * 250);
 
@@ -40,32 +41,50 @@ function updateSliders(source) {
         co2Color3 = Math.round(255 - (t * 150));
     }
 
-    const targetColor = [co2Color1, co2Color3
-, co2Color2];
+    const co2TargetColor = [co2Color1, co2Color3, co2Color2];
+    // end co2 colors
+
+    // atmos colors
+    const oxyColor1 = 255 - Math.round((oxyRangeValue / oxyMax) * 255);
+    const oxyColor2 = 255 - Math.round((oxyRangeValue / oxyMax) * 250);
+
+    let oxyColor3 = 255;
+    if (co2RangeValue >= 50) {
+        const t = (oxyRangeValue - 50) / (oxyMax - 50);
+        oxyColor3 = Math.round(255 - (t * 150));
+    }
+
+    const oxyTargetColor = [oxyColor1, oxyColor3, oxyColor2];
+    // end atmos colors
 
     if (animationFrame) cancelAnimationFrame(animationFrame);
 
     const steps = 200;
     let step = 0;
-    const startColor = [...currentColor];
+    const co2StartColor = [...currentColor];
+    const oxyStartColor = [...currentColor];
 
     // animation function
     function animate() {
         step++;
         const progress = step / steps;
-        // Interpolate each color channel
-        const r = Math.round(startColor[0] + (targetColor[0] - startColor[0]) * progress);
-        const g = Math.round(startColor[1] + (targetColor[1] - startColor[1]) * progress);
-        const b = Math.round(startColor[2] + (targetColor[2] - startColor[2]) * progress);
+        // Interpolate each color channel for co2
+        const co2R = Math.round(co2StartColor[0] + (co2TargetColor[0] - co2StartColor[0]) * progress);
+        const co2G = Math.round(co2StartColor[1] + (co2TargetColor[1] - co2StartColor[1]) * progress);
+        const co2B = Math.round(co2StartColor[2] + (co2TargetColor[2] - co2StartColor[2]) * progress);
+                // Interpolate each color channel for atmos
+        const oxyR = Math.round(oxyStartColor[0] + (oxyTargetColor[0] - oxyStartColor[0]) * progress);
+        const oxyG = Math.round(oxyStartColor[1] + (oxyTargetColor[1] - oxyStartColor[1]) * progress);
+        const oxyB = Math.round(oxyStartColor[2] + (oxyTargetColor[2] - oxyStartColor[2]) * progress);
 
         
-        plants.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
-        atmos.style.backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        plants.style.backgroundColor = `rgb(${co2R}, ${co2G}, ${co2B})`;
+        atmos.style.backgroundColor = `rgb(${oxyR}, ${oxyG}, ${oxyB})`;
 
         if (step < steps) {
             animationFrame = requestAnimationFrame(animate);
         } else {
-            currentColor = targetColor;
+            currentColor = co2TargetColor;
         }
     }
     // end of use 'source' to change co2 or oxy
