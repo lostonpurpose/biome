@@ -9,7 +9,9 @@ let oxygenLabel = 100;
 oxyLevel.textContent = "Oxygen Level: " + (oxygenLabel - co2RangeSlider.value) + "%";
 co2Level.textContent = "CO2 Level: " + co2RangeSlider.value + "%";
 
-let currentColor = [255, 255, 255]; // Start with white or your initial color
+let co2CurrentColor = [255, 255, 255]; // Start with white or your initial color
+let oxyCurrentColor = [255, 255, 255]; // Start with white or your initial color
+
 let animationFrame; // To track the animation so we can cancel it
 
 // func to take in oxy or co2 slider and change opposite
@@ -44,25 +46,25 @@ function updateSliders(source) {
     const co2TargetColor = [co2Color1, co2Color3, co2Color2];
     // end co2 colors
 
-    // atmos colors
-    const oxyColor1 = 255 - Math.round((oxyRangeValue / oxyMax) * 255);
-    const oxyColor2 = 255 - Math.round((oxyRangeValue / oxyMax) * 250);
+// atmos colors
+const white = [255, 255, 255];
+const darkBlue = [0, 89, 173]; // Your desired dark blue at 100%
 
-    let oxyColor3 = 255;
-    if (co2RangeValue >= 50) {
-        const t = (oxyRangeValue - 50) / (oxyMax - 50);
-        oxyColor3 = Math.round(255 - (t * 150));
-    }
+const t = oxyRangeValue / oxyMax; // 0 at min, 1 at max
 
-    const oxyTargetColor = [oxyColor1, oxyColor3, oxyColor2];
+const oxyColor1 = Math.round(white[0] + (darkBlue[0] - white[0]) * t);
+const oxyColor2 = Math.round(white[1] + (darkBlue[1] - white[1]) * t);
+const oxyColor3 = Math.round(white[2] + (darkBlue[2] - white[2]) * t);
+
+const oxyTargetColor = [oxyColor1, oxyColor2, oxyColor3];
     // end atmos colors
 
     if (animationFrame) cancelAnimationFrame(animationFrame);
 
     const steps = 200;
     let step = 0;
-    const co2StartColor = [...currentColor];
-    const oxyStartColor = [...currentColor];
+    const co2StartColor = [...co2CurrentColor];
+    const oxyStartColor = [...oxyCurrentColor];
 
     // animation function
     function animate() {
@@ -72,7 +74,7 @@ function updateSliders(source) {
         const co2R = Math.round(co2StartColor[0] + (co2TargetColor[0] - co2StartColor[0]) * progress);
         const co2G = Math.round(co2StartColor[1] + (co2TargetColor[1] - co2StartColor[1]) * progress);
         const co2B = Math.round(co2StartColor[2] + (co2TargetColor[2] - co2StartColor[2]) * progress);
-                // Interpolate each color channel for atmos
+        // Interpolate each color channel for atmos
         const oxyR = Math.round(oxyStartColor[0] + (oxyTargetColor[0] - oxyStartColor[0]) * progress);
         const oxyG = Math.round(oxyStartColor[1] + (oxyTargetColor[1] - oxyStartColor[1]) * progress);
         const oxyB = Math.round(oxyStartColor[2] + (oxyTargetColor[2] - oxyStartColor[2]) * progress);
@@ -83,14 +85,17 @@ function updateSliders(source) {
 
         if (step < steps) {
             animationFrame = requestAnimationFrame(animate);
-        } else {
-            currentColor = co2TargetColor;
+        } 
+        else if (source === "co2") {
+            co2CurrentColor = co2TargetColor;
+        }
+        else if (source === "oxy") {
+            oxyCurrentColor = oxyTargetColor;
         }
     }
     // end of use 'source' to change co2 or oxy
-    // or use a param on animate below
-    source === "co2" ? molecule = plants : molecule = atmos
-    animate(molecule);
+
+    animate();
 };
 
 co2RangeSlider.addEventListener('input', () => updateSliders("co2"));
