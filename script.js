@@ -14,6 +14,12 @@ let oxyCurrentColor = [255, 255, 255]; // Start with white or your initial color
 
 let animationFrame; // To track the animation so we can cancel it
 
+function getCurrentRGB(element) {
+    const style = getComputedStyle(element);
+    const rgb = style.backgroundColor.match(/\d+/g);
+    return rgb ? rgb.map(Number) : [255, 255, 255];
+}
+
 // func to take in oxy or co2 slider and change opposite
 function updateSliders(source) {
     // make sliders always add up to 100
@@ -63,8 +69,10 @@ const oxyTargetColor = [oxyColor1, oxyColor2, oxyColor3];
 
     const steps = 200;
     let step = 0;
-    const co2StartColor = [...co2CurrentColor];
-    const oxyStartColor = [...oxyCurrentColor];
+        // Use the ACTUAL current color on screen as the animation start
+    const co2StartColor = getCurrentRGB(plants);
+    const oxyStartColor = getCurrentRGB(atmos);
+
 
     // animation function
     function animate() {
@@ -85,12 +93,9 @@ const oxyTargetColor = [oxyColor1, oxyColor2, oxyColor3];
 
         if (step < steps) {
             animationFrame = requestAnimationFrame(animate);
-        } 
-        else if (source === "co2") {
-            co2CurrentColor = co2TargetColor;
-        }
-        else if (source === "oxy") {
-            oxyCurrentColor = oxyTargetColor;
+        } else {
+        co2CurrentColor = [co2R, co2G, co2B];
+        oxyCurrentColor = [oxyR, oxyG, oxyB];
         }
     }
     // end of use 'source' to change co2 or oxy
@@ -103,7 +108,7 @@ oxyRangeSlider.addEventListener('input', () => updateSliders("oxy"));
 
 // Initialize everything on page load
 updateSliders("co2");
-updateSliders("oxy");
+// updateSliders("oxy");
 
 // wow this just got so complicated
 // if everything starts at 50% we're at balance (except h20, can start at 80 or something)
