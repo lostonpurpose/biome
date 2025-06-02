@@ -9,8 +9,8 @@ let oxygenLabel = 100;
 oxyLevel.textContent = "Oxygen Level: " + (oxygenLabel - co2RangeSlider.value) + "%";
 co2Level.textContent = "CO2 Level: " + co2RangeSlider.value + "%";
 
-let co2CurrentColor = [255, 255, 255]; // Start with white or your initial color
-let oxyCurrentColor = [255, 255, 255]; // Start with white or your initial color
+let co2CurrentColor = [255, 255, 255]; // Start with origin or your initial color
+let oxyCurrentColor = [255, 255, 255]; // Start with origin or your initial color
 
 let animationFrame; // To track the animation so we can cancel it
 
@@ -40,29 +40,29 @@ function updateSliders(source) {
     const oxyRangeValue = Number(oxyRangeSlider.value);
 
     // co2 colors
-    const co2Color1 = 255 - Math.round((co2RangeValue / co2Max) * 255);
-    const co2Color2 = 255 - Math.round((co2RangeValue / co2Max) * 250);
+    const co2Start = [130, 132, 81]; // color at 0% CO2
+    const co2End = [0, 70, 4];       // color at 100% CO2
 
-    let co2Color3 = 255;
-    if (co2RangeValue >= 50) {
-        const t = (co2RangeValue - 50) / (co2Max - 50);
-        co2Color3 = Math.round(255 - (t * 150));
-    }
+    const tCo2 = co2RangeValue / co2Max; // 0 at min, 1 at max
 
-    const co2TargetColor = [co2Color1, co2Color3, co2Color2];
+    const co2Color1 = Math.round(co2Start[0] + (co2End[0] - co2Start[0]) * tCo2);
+    const co2Color2 = Math.round(co2Start[1] + (co2End[1] - co2Start[1]) * tCo2);
+    const co2Color3 = Math.round(co2Start[2] + (co2End[2] - co2Start[2]) * tCo2);
+
+    const co2TargetColor = [co2Color1, co2Color2, co2Color3];
     // end co2 colors
 
-// atmos colors
-const white = [255, 255, 255];
-const darkBlue = [0, 89, 173]; // Your desired dark blue at 100%
+    // atmos colors
+    const origin = [255, 196, 169];
+    const darkBlue = [0, 89, 173]; // Your desired dark blue at 100%
 
-const t = oxyRangeValue / oxyMax; // 0 at min, 1 at max
+    const t = oxyRangeValue / oxyMax; // 0 at min, 1 at max
 
-const oxyColor1 = Math.round(white[0] + (darkBlue[0] - white[0]) * t);
-const oxyColor2 = Math.round(white[1] + (darkBlue[1] - white[1]) * t);
-const oxyColor3 = Math.round(white[2] + (darkBlue[2] - white[2]) * t);
+    const oxyColor1 = Math.round(origin[0] + (darkBlue[0] - origin[0]) * t);
+    const oxyColor2 = Math.round(origin[1] + (darkBlue[1] - origin[1]) * t);
+    const oxyColor3 = Math.round(origin[2] + (darkBlue[2] - origin[2]) * t);
 
-const oxyTargetColor = [oxyColor1, oxyColor2, oxyColor3];
+    const oxyTargetColor = [oxyColor1, oxyColor2, oxyColor3];
     // end atmos colors
 
     if (animationFrame) cancelAnimationFrame(animationFrame);
