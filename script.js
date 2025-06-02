@@ -25,7 +25,7 @@ function updateSliders(source) {
         co2RangeSlider.value = 100 - oxyRangeSlider.value;
     }
     co2Level.textContent = "CO2 Level: " + co2RangeSlider.value + "%";
-    oxyLevel.textContent = "Oxygen Level: " + (oxygenLabel - co2RangeSlider.value) + "%";
+    oxyLevel.textContent = "O2 Level: " + (oxygenLabel - co2RangeSlider.value) + "%";
 
     // animation code
     const co2Max = Number(co2RangeSlider.co2Max) || 100;

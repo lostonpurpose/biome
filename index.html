@@ -8,30 +8,33 @@
 </head>
 <body>
 
-    <div class="main-container">
-        <div class="atmos"></div>
-        <div class="mountain"></div>
-        <div class="plants"></div>
-        <div class="terrarium"></div>
+    <div class="flexed">
+
+        <div class="data">
+            <div class="co2-info">
+                <input type="range" id="co2" name="co2" min="0" max="100" value="50">
+                <label for="co2" id="co2-label">CO2</label>
+                <div class="level-items co2-level">CO2 Level: 0%</div>
+            </div>
+            <div class="o2-info">
+                <input type="range" id="oxy" name="oxy" min="0" max="100" value="50">
+                <label for="oxy" id="oxy-label">O2</label>
+                <div class="level-items oxy-level">O2 Level: 0%</div>
+            </div>
+            <!-- <div class="levels"> -->
+            <div class="level-items">Water Level: 80%</div>
+            <div class="level-items">Plant Density: 0%</div>
+            <!-- </div> -->
+        </div>
+
+        <div class="main-container">
+            <div class="atmos"></div>
+            <div class="mountain"></div>
+            <div class="plants"></div>
+            <div class="terrarium"></div>
+        </div>
+
     </div>
-
-    
-
-    <div class="data">
-        <input type="range" id="co2" name="co2" min="0" max="100" value="50">
-        <label for="co2" id="co2-label">CO2</label>
-        <div class="level-items co2-level">CO2 Level: 0%</div>
-
-        <input type="range" id="oxy" name="oxy" min="0" max="100" value="50">
-        <label for="oxy" id="oxy-label">O2</label>
-        <div class="level-items oxy-level">Oxygen Level: 0%</div>
-        <!-- <div class="levels"> -->
-                <div class="level-items">Water Level: 80%</div>
-                <div class="level-items">Plant Density: 0%</div>
-        <!-- </div> -->
-    </div>
-
-
     
     <script src="script.js"></script>
 </body>
