@@ -42,20 +42,20 @@ body {
 
 .co2-info, .o2-info {
     display: flex;
+    margin-bottom: 8px;
 }
 
 #co2-label, #oxy-label {
     margin-right: 30px;
 }
 
-/* .levels {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-} */
+.o2-info {
+    margin-bottom: 28px;
+}
 
 .level-items {
-    margin-right: 75px;
+    margin-bottom: 8px;
+    margin-top: 16px;
 }
 
 .terrarium {
@@ -79,4 +79,9 @@ body {
     background-repeat: no-repeat;/* Prevent tiling */
     opacity: 50%;
 
+}
+
+.in-prog {
+    margin-top: 56px;
+    color: rgb(169, 169, 0);
 }
